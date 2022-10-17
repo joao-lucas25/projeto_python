@@ -2,14 +2,37 @@ import tkinter as tk
 import mysql.connector
 #pip install mysql-connector
 
-def conexao():
-        conexao = mysql.connector.connect(
-                host = "localHost",
-                user = "root",
-                passwd = "",
-                db = "usuarios"
-        )
+class Usuarios:
+        def __init__(self, id, nome,sobrenome,cidade,estado,data_nascimento):
+                self.id = id
+                self.nome = nome
+                self.sobrenome = sobrenome
+                self.cidade = cidade
+                self.estado = estado
+                self.data_nascimento = data_nascimento
 
+
+def conexao():
+        try:
+                conexao = mysql.connector.connect(
+                        host = "localhost",
+                        user = "root",
+                        passwd = "",
+                        db = "banco_python"
+                )
+                print("conectado")
+                return conexao
+        except mysql.connector.Error as e:
+                print(f'Erro ao conectar no Servidor MySql: {e}')
+
+def desconectar(conexao):
+        if conexao:
+                conexao.close()
+
+def selecionarUsuarios():
+        conn = conexao()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM USUARIOS")
 
 def cadastrarUsuarios():
     janelaUsuarios = tk.Toplevel(app)
@@ -51,6 +74,7 @@ def cadastrarUsuarios():
     entryEstado.place(x=230, y=150)
     
     def salvarUsuario():
+        conn = conexao()
         print("O nome informado foi: ",entryNome.get())
         print("O sobrenome informado foi: ", entrySobrenome.get())
         print("A data de nascimento informada foi: ", entryDataNascimento.get())
@@ -88,5 +112,6 @@ menuPrincipal.add_cascade(label="Funcao"
 #buttonExample.place(x=100,y=50)
 app.title("Sistema Tarumã")
 app.geometry("800x600")
+
 app.mainloop()
 app.destroy()

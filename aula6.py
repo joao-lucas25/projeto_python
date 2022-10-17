@@ -1,4 +1,25 @@
 import tkinter as tk 
+import mysql.connector
+#pip install mysql-connector
+
+
+
+def conexao():
+        try:
+                conexao = mysql.connector.connect(
+                        host = "localhost",
+                        user = "root",
+                        passwd = "",
+                        db = "usuarios"
+                ) 
+                print("conectado")
+                return conexao
+        except mysql.connector.Error as e:
+                print(f'Erro ao conectar no Servidor mysql: {e}')
+                
+       
+
+
 
 def cadastrarUsuarios():
     janelaUsuarios = tk.Toplevel(app)
@@ -35,7 +56,12 @@ def cadastrarUsuarios():
     entryCidade = tk.Entry(janelaUsuarios)
     entryCidade.place(x=230, y=125)
 
-    lblEstado = tk.Label
+    lblEstado = tk.Label(janelaUsuarios, text="Informe o estado: "
+             ,font="Times"
+             ,bg="White",fireground="black")
+    lblEstado.place(x=100,y=150)
+    entryEstado = tk.Label(janelaUsuarios)         
+    entryEstado.place()
 
     
     janelaUsuarios.title("Cadastro de Usuários")
